@@ -25,12 +25,12 @@ class Vacances(db.Model):
         return '<Vacances %r>' % self.vacances_id
 	
 	def depotVacances(datedebut, datefin, nbjour, user):
-		u = models.Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=nbjour, user_id=user, status=0)
+		u = Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=nbjour, user_id=user, status=0)
 		db.session.add(u)
 		db.session.commit()
-	
+
 	def priseVacances(datedebut, datefin, nbjour, user):
-		u = models.Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=-nbjour, user_id=user, status=0)
+		u = Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=-nbjour, user_id=user, status=0)
 		db.session.add(u)
 		db.session.commit()
 
