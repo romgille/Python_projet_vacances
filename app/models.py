@@ -6,7 +6,7 @@ class User(db.Model):
     nom = db.Column(db.String(64), index=True, unique=True)
     prenom = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    # resp_id = db.relationship(db.Integer, db.ForeignKey('User.user_id'))
+    resp_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     role = db.Column(db.Integer)
 
     def __repr__(self):
