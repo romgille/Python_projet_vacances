@@ -15,8 +15,8 @@ class User(db.Model):
 
 class Vacances(db.Model):
     vacances_id = db.Column(db.Integer, primary_key=True)
-    date_debut = db.Column(db.DateTime)
-    date_fin = db.Column(db.DateTime)
+    date_debut = db.Column(db.Date)
+    date_fin = db.Column(db.Date)
     nb_jour = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     status = db.Column(db.Integer)
@@ -25,11 +25,13 @@ class Vacances(db.Model):
         return '<Vacances %r>' % self.vacances_id
 	
 	def depotVacances(datedebut, datefin, nbjour, user):
+		@staticmethod
 		u = Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=nbjour, user_id=user, status=0)
 		db.session.add(u)
 		db.session.commit()
 
 	def priseVacances(datedebut, datefin, nbjour, user):
+		@staticmethod
 		u = Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=-nbjour, user_id=user, status=0)
 		db.session.add(u)
 		db.session.commit()
