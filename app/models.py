@@ -6,7 +6,7 @@ class User(db.Model):
     nom = db.Column(db.String(64), index=True, unique=True)
     prenom = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    # resp_id = db.relationship(db.Integer, db.ForeignKey('User.user_id'))
+    #resp_id = db.relationship(db.Integer, db.ForeignKey('user.user_id'))
     role = db.Column(db.Integer)
 
     def __repr__(self):
@@ -23,7 +23,7 @@ class Vacances(db.Model):
 
     def __repr__(self):
         return '<Vacances %r>' % self.vacances_id
-
+	
 	def depotVacances(datedebut, datefin, nbjour, user):
 		u = models.Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=nbjour, user_id=user, 0)
 		db.session.add(u)
@@ -33,3 +33,4 @@ class Vacances(db.Model):
 		u = models.Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=-nbjour, user_id=user, 0)
 		db.session.add(u)
 		db.session.commit()
+
