@@ -9,7 +9,10 @@ from app.forms import LoginForm
 @app.route('/')
 @app.route('/index')
 def index():
-    return "Hello, World!"
+    user = {'nickname': 'Foe'}  # fake user
+    return render_template('index.html',
+                           title='Home',
+                           user=user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
