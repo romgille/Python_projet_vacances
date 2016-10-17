@@ -1,5 +1,6 @@
 from app import db
 
+
 class User(db.Model):
 	user_id = db.Column(db.Integer, primary_key=True)
 	nom = db.Column(db.String(64), index=True, unique=True)
@@ -20,3 +21,5 @@ class Vacances(db.Model):
 	user_id = db.Column(db.Integer,db.ForeignKey('User.user_id'))
 	status = db.Column(db.Integer)
 
+def __repr__(self):
+    return '<Vacances %r>' % self.vacances_id
