@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h1> ça marche jusque là</h1>
+<table>
+
+    <tr>
+        <th>Nom </th>
+        <th>Prénom </th>
+        <th>Nombre de jours  </th>
+        <th> Date début </th>
+        <th> Date fin</th>
+
+    </tr>
+    {% for i in l %}
+   <tr>
+
+       <td> {{ models.User.query.filter_by(user_id=i.user_id).first().nom }} </td>
+
+       <td> {{ models.User.query.filter_by(user_id=i.user_id).first().prenom }} </td>
+
+       <td> {{i.nb_jour }} </td>
+
+       <td> {{ i.date_debut }}</td>
+
+       <td> {{i.date_fin }}</td>
+
+   </tr>
+
+    {% endfor %}
+</table>
+
+
+{% endblock %}
