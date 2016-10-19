@@ -6,7 +6,7 @@ class User(db.Model):
     nom = db.Column(db.String(64), index=True, unique=True)
     prenom = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    # resp_id = db.relationship(db.Integer, db.ForeignKey('User.user_id'))
+    resp_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     role = db.Column(db.Integer)
 
     def __repr__(self):
@@ -15,11 +15,23 @@ class User(db.Model):
 
 class Vacances(db.Model):
     vacances_id = db.Column(db.Integer, primary_key=True)
-    date_debut = db.Column(db.DateTime)
-    date_fin = db.Column(db.DateTime)
+    date_debut = db.Column(db.Date)
+    date_fin = db.Column(db.Date)
     nb_jour = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     status = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Vacances %r>' % self.vacances_id
+
+    @staticmethod
+    def depot_vacances(datedebut, datefin, nbjour, user):
+        u = Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=nbjour, user_id=user, status=0)
+        db.session.add(u)
+        db.session.commit()
+
+    @staticmethod
+    def prise_vacances(datedebut, datefin, nbjour, user):
+        u = Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=-nbjour, user_id=user, status=0)
+        db.session.add(u)
+        db.session.commit()

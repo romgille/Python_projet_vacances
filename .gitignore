@@ -89,7 +89,4 @@ ENV/
 .ropeproject
 
 Supprimerait .idea/
-Supprimerait app/static/
-Supprimerait app/templates/
 Supprimerait flask/
-Supprimerait tmp/
