@@ -90,3 +90,5 @@ ENV/
 
 Supprimerait .idea/
 Supprimerait flask/
+Supprimerait app.db
+Supprimerait db_repository/
