@@ -5,7 +5,6 @@ from flask_mail import Mail
 
 from flask_bootstrap import Bootstrap
 
-from flask_wtf import FlaskForm
 
 
 
@@ -22,3 +21,5 @@ bootstrap = Bootstrap(app)
 
 from app import views, models
 
+os.environ["HTTP_PROXY"] = "http://cache.esiee.fr:3128"
+os.environ["HTTPS_PROXY"] = "http://cache.esiee.fr:3128"
