@@ -1,4 +1,7 @@
 from ldap3 import Connection
+from ldap3 import Server, ALL, AUTH_SIMPLE, STRATEGY_SYNC
+
+from flask import Flask
 from ldap3 import Server, ALL
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
@@ -10,7 +13,6 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 
 import os
-
 
 app = Flask(__name__)
 
