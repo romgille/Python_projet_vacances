@@ -12,13 +12,13 @@ db = SQLAlchemy(app)
 
 from app import views, models
 
-# os.environ["HTTP_PROXY"] = "http://cache.esiee.fr:3128"
-# os.environ["HTTPS_PROXY"] = "http://cache.esiee.fr:3128"
-# server = Server('ldap.esiee.fr', use_ssl=True, get_info=ALL)
-# conn = Connection(server, user="uid=foe,ou=Users,dc=esiee,dc=fr", password='plop')
-#
-# print(conn)
-# conn.open()
-# conn.bind()
-# print(conn)
-# conn.unbind()
+os.environ["HTTP_PROXY"] = "http://cache.esiee.fr:3128"
+os.environ["HTTPS_PROXY"] = "http://cache.esiee.fr:3128"
+server = Server('ldap.esiee.fr', use_ssl=True, get_info=ALL)
+conn = Connection(server, user="uid=foe,ou=Users,dc=esiee,dc=fr", password='plop')
+
+print(conn)
+conn.open()
+conn.bind()
+print(conn)
+conn.unbind()
