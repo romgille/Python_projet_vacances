@@ -1,7 +1,7 @@
 #from ldap3 import Connection
 #from ldap3 import Server, ALL
 
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_mail import Mail
