@@ -18,3 +18,6 @@ HTTPS_PROXY=http://cache.esiee.fr:3128
 * ldap3
 * flask_sqlalchemy
 * flask_wtf
+* sqlalchemy
+* sqlalchemy-migrate
+

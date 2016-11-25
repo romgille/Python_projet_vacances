@@ -1,4 +1,5 @@
 from app import db
+from app.ldap import Ldap
 
 
 class User(db.Model):
@@ -8,6 +9,34 @@ class User(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     resp_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     role = db.Column(db.Integer)
+    
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        try:
+            return ord(self.id)
+        except NameError:
+            return str(self.id)
+
+    def create_user(self):
+        actual_user = Ldap.check_login()
+        print(actual_user)
+        self.nom = actual_user[0]
+        self.prenom = actual_user[1]
+        self.email = actual_user[2]
+        self.resp_id = actual_user[3]
+        self.role = actual_user[4]
+        return self
 
     def __repr__(self):
         return '<User %r>' % self.user_id
