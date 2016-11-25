@@ -1,0 +1,22 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Vacances - Prise</h1>
+  <form action="" method="post" name="prise">
+      {{ form.hidden_tag() }}
+      <p>
+          Date de debut :<br>
+          {{ form.priseDateDebut(size=80) }}<br>
+      </p>
+      <p>
+          Date de fin :<br>
+          {{ form.priseDateFin(size=80) }}<br>
+      </p>
+	  <p>
+          Nombre de jours :<br>
+          {{ form.priseNbJours(size=80) }}<br>
+      </p>
+      <p><input type="submit" value="Valider"></p>
+  </form>
+{% endblock %}
