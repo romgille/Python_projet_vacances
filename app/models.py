@@ -45,6 +45,30 @@ class User(db.Model):
         return self
 
     @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        try:
+            return ord(self.id)
+        except NameError:
+            return str(self.id)
+
+    def create_user(self):
+        actual_user = Ldap.check_login()
+        print(actual_user)
+        self.nom = actual_user[0]
+        self.prenom = actual_user[1]
+        self.email = actual_user[2]
+        self.resp_id = actual_user[3]
+        self.role = actual_user[4]
+        return self
+
+    @property
     def is_authenticated(self):
         return True
     @property

@@ -22,7 +22,7 @@ db = SQLAlchemy(app)
 mail = Mail(app)
 bootstrap = Bootstrap(app)
 
-from app import views, models
+from app import views, models, forms, ldap
 
 
 os.environ["HTTP_PROXY"] = "http://cache.esiee.fr:3128"
