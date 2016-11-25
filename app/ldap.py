@@ -2,7 +2,6 @@ import base64
 
 from ldap3 import Connection, ALL
 from ldap3 import Server
-from app.forms import LoginForm
 
 
 class Ldap:

@@ -1,6 +1,7 @@
 from app import db
 from app.ldap import Ldap
 from app.forms import LoginForm
+from app.ldap import Ldap
 
 
 class User(db.Model):
@@ -11,7 +12,7 @@ class User(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     resp_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     role = db.Column(db.Integer)
-    
+
     @property
     def is_authenticated(self):
         return True
