@@ -56,7 +56,7 @@ def depot():
     form = DepotForm()
     if form.validate_on_submit():
         flash('Date de debut depot = "%s", Date de fin depot = "%s", Nb de jours depot=%s' %
-              (str(form.depotDateDebut), str(form.depotDateFin.data),str(form.depotNbJours.data)))
+              (str(form.depotDateDebut.data), str(form.depotDateFin.data),str(form.depotNbJours.data)))
         return redirect('/index')
     return render_template('depot.html',
                            title='Vacances - Depot',
