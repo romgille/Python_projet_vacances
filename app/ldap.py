@@ -28,8 +28,6 @@ class Ldap:
             resp_id = 1  # Todo faire propre
             role = 0  # Todo faire propre
             is_student = False
-            # if conn.entries[0]['mailEDU'].decode('UTF-8') == 'N':
-            #    is_student = False
 
             if is_student:
                 print('Bad Credentials')  # TODO créer une page pour login student
