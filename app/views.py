@@ -4,6 +4,7 @@ from flask import render_template
 
 from app import app
 from app.forms import LoginForm
+from app.utils.mail import Mail
 
 
 @app.route('/')

@@ -7,7 +7,7 @@
 
 ##Config app
 
-_Be aware you should **NOT** commit you personnal data_
+*Be aware you should **NOT** commit you personnal data*
 
 ###Mail server
 You need to define environment variables to setup the mail address used by the app
