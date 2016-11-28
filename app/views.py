@@ -118,6 +118,17 @@ def prise():
                            title='Vacances - Prise',
                            form=form)
 
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash('Login and password requested for LDAP="%s", remember_me=%s' %
+              (form.login.data, str(form.remember_me.data)))
+        return redirect('/index')
+    return render_template('test.html',
+                           title='Sign In',
+                           form=form)
+
 
 # @app.route('/user/<nom>')
 # def user(nom):
