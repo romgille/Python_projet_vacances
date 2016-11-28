@@ -1,11 +1,13 @@
 from app import db
 from app.ldap import Ldap
+from app.forms import LoginForm
 
 
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
-    nom = db.Column(db.String(64), index=True, unique=True)
-    prenom = db.Column(db.String(64), index=True, unique=True)
+    login = db.Column(db.String(64), index=True, unique=True)
+    nom = db.Column(db.String(64), index=True, unique=False)
+    prenom = db.Column(db.String(64), index=True, unique=False)
     email = db.Column(db.String(120), index=True, unique=True)
     resp_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     role = db.Column(db.Integer)
@@ -28,9 +30,12 @@ class User(db.Model):
         except NameError:
             return str(self.id)
 
+    def get_name(self):
+        return self.nom
+
     def create_user(self):
         actual_user = Ldap.check_login()
-        print(actual_user)
+        self.login = LoginForm().login.data
         self.nom = actual_user[0]
         self.prenom = actual_user[1]
         self.email = actual_user[2]
