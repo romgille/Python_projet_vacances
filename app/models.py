@@ -43,6 +43,16 @@ class User(db.Model):
         self.role = actual_user[4]
         return self
 
+    @property
+    def is_authenticated(self):
+        return True
+    @property
+    def is_resp(self):
+        if(self.resp_id >=1):
+            return True
+        else:
+            return False
+
     def __repr__(self):
         return '<User %r>' % self.user_id
 
