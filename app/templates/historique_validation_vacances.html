@@ -9,11 +9,9 @@
         <th>Prénom </th>
         <th>Nombre de jours  </th>
         <th> Date début </th>
-        <th> Date fin</th>
-        <th>Validation </th>
+        <th> Date fin </th>
 
     </tr>
-    <form action="" method="post">
         {% for i in l %}
             <tr>
 
@@ -27,24 +25,12 @@
 
                 <td> {{i.date_fin }}</td>
 
-                <td>
-                    <select name= {{i.vacances_id}} id="validate">
-                        <option value=0></option>
-
-                        <option value=1>Oui</option>
-
-                        <option value=-1>Non</option>
-                    </select>
-                </td>
 
             </tr>
         {% endfor %}
 
 </table>
-        <input type="submit" value="Envoyer" />
 
-
-    </form>
 {% endif %}
 
 
