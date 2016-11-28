@@ -10,6 +10,7 @@ from app import db
 from app.models import User
 from app.forms import LoginForm, DepotForm, PriseForm
 from app import db,models
+from app.utils.mail import Mail
 
 
 @app.route('/')
