@@ -1,14 +1,6 @@
-from flask import flash
-from flask import redirect
-from flask import render_template
-from flask import request
-from app import db, models
-from .models import User
-from flask import url_for
+from flask import flash, redirect, render_template, request
 
-from app import app
-from app.forms import LoginForm
-from app import db
+from app import db, app, models
 from app.models import User
 from app.forms import LoginForm, DepotForm, PriseForm
 from app import db,models
@@ -36,8 +28,9 @@ def login():
             db.session.commit()
         return redirect('/user/' + user_login)
     return render_template('login.html',
-                           title='Sign In',
+                           title='Sign Up',
                            form=form)
+
 
 @app.route('/historique_validation_vacances')
 def historique_admission_vacances():
@@ -49,8 +42,8 @@ def historique_admission_vacances():
         v = models.Vacances.query.filter_by(user_id=j.user_id, status=1).all()
         for n in v:
             l.append(n)
-    print (len(l))
-    if(len(l) > 0):
+    print(len(l))
+    if len(l) > 0:
         msg = "Vacances autorisées"
     else:
         msg = "Il n'y a eu aucunes vacances autorisées."
@@ -61,7 +54,8 @@ def historique_admission_vacances():
                            msg=msg,
                            display=True)
 
-@app.route('/admission_vacances',methods=['GET','POST'])
+
+@app.route('/admission_vacances', methods=['GET', 'POST'])
 def admission_vacances():
     list_vacances_users = models.User.query.filter_by(resp_id=1).all()
     l = []
@@ -70,12 +64,12 @@ def admission_vacances():
         v = models.Vacances.query.filter_by(user_id=j.user_id, status=0).all()
         for n in v:
             l.append(n)
-    if(len(v) > 0):
-        if(request.method == 'POST'):
+    if len(v) > 0:
+        if request.method == 'POST':
             for i in request.form:
                 result = request.form[i]
-                if(result != "0"):
-                    print ("ID Vacances : "+ i +" Rsultat : "+result)
+                if result != "0":
+                    print("ID Vacances : " + i + " Rsultat : " + result)
                     u = models.Vacances.query.filter_by(vacances_id=i).first()
                     u.status = result
                     db.session.commit()
@@ -83,7 +77,7 @@ def admission_vacances():
             msg = "Modification appliquées"
 
         else:
-            msg="Appliquer les modifications nécessaires"
+            msg = "Appliquer les modifications nécessaires"
 
         return render_template('admission_vacances.html',
                                title='Autorisations',
@@ -98,38 +92,42 @@ def admission_vacances():
                                display=False
                                )
 
+
 @app.route('/depot', methods=['GET', 'POST'])
 def depot():
     form = DepotForm()
     if form.validate_on_submit():
         flash('Date de debut depot = "%s", Date de fin depot = "%s", Nb de jours depot=%s' %
-              (str(form.depotDateDebut.data), str(form.depotDateFin.data),str(form.depotNbJours.data)))
+              (str(form.depotDateDebut.data), str(form.depotDateFin.data), str(form.depotNbJours.data)))
         return redirect('/index')
     return render_template('depot.html',
                            title='Vacances - Depot',
                            form=form)
+
 
 @app.route('/prise', methods=['GET', 'POST'])
 def prise():
     form = PriseForm()
     if form.validate_on_submit():
         flash('Date de debut prise = "%s", Date de fin prise = "%s", Nb de jours prise=%s' %
-              (str(form.priseDateDebut.data), str(form.priseDateFin.data),str(form.priseNbJours.data)))
+              (str(form.priseDateDebut.data), str(form.priseDateFin.data), str(form.priseNbJours.data)))
         return redirect('/index')
     return render_template('prise.html',
                            title='Vacances - Prise',
                            form=form)
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login and password requested for LDAP="%s", remember_me=%s' %
-              (form.login.data, str(form.remember_me.data)))
-        return redirect('/index')
-    return render_template('test.html',
-                           title='Sign In',
-                           form=form)
+
+# @app.route('/test', methods=['GET', 'POST'])
+# def test():
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         flash('Login and password requested for LDAP="%s", remember_me=%s' %
+#               (form.login.data, str(form.remember_me.data)))
+#         return redirect('/index')
+#     return render_template('user.html',
+#                            title='Sign Up',
+#                            form=form)
+
 
 
 # @app.route('/user/<nom>')

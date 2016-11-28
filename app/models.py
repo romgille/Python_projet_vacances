@@ -13,7 +13,7 @@ class User(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     resp_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     role = db.Column(db.Integer)
-    
+
     @property
     def is_authenticated(self):
         return True
@@ -75,9 +75,10 @@ class User(db.Model):
     @property
     def is_authenticated(self):
         return True
+
     @property
     def is_resp(self):
-        if(self.resp_id >=1):
+        if self.resp_id >= 1:
             return True
         else:
             return False

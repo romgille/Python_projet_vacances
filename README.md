@@ -18,4 +18,5 @@ HTTPS_PROXY=http://cache.esiee.fr:3128
 * flask_wtf
 * sqlalchemy
 * sqlalchemy-migrate
-
+* flask-mail
+* flask-bootstrap
