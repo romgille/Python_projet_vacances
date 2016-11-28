@@ -15,10 +15,6 @@ class User(db.Model):
     role = db.Column(db.Integer)
 
     @property
-    def is_authenticated(self):
-        return True
-
-    @property
     def is_active(self):
         return True
 
