@@ -1,10 +1,9 @@
 from flask import flash, redirect, render_template, request
 
-from app import db, app, models
+from app import app
 from app.models import User
 from app.forms import LoginForm, DepotForm, PriseForm
-from app import db,models
-from app.utils.mail import Mail
+from app import db, models
 
 
 @app.route('/')
@@ -142,20 +141,3 @@ def user(user_login):
     prenom = actual_user.prenom
     return render_template('user.html',
                            nom=prenom + ' ' + nom)
-
-@app.route('/admission_vacances',methods=['GET','POST'])
-def admission_vacances():
-    u=models.User.query.filter_by(resp_id=1).all()
-    l=[]
-    v=[]
-    for j in u:
-        v=models.Vacances.query.filter_by(user_id=j.user_id,status=0).all()
-        for n in v:
-            l.append(n)
-    print (l[0].user_id)
-
-
-    return render_template('admission_vacances.html',
-                           title='Autorisations',
-                           l=l,
-                           models=models)
