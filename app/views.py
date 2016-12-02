@@ -100,6 +100,7 @@ def depot():
     if form.validate_on_submit():
         flash('Date de debut depot = "%s", Date de fin depot = "%s", Nb de jours depot=%s' %
               (str(form.depotDateDebut.data), str(form.depotDateFin.data), str(form.depotNbJours.data)))
+        models.Vacances.depot_vacances(form.depotDateDebut.data,form.depotDateFin.data,form.depotNbJours.data,1)
         return redirect('/index')
     return render_template('depot.html',
                            title='Vacances - Depot',
@@ -112,6 +113,7 @@ def prise():
     if form.validate_on_submit():
         flash('Date de debut prise = "%s", Date de fin prise = "%s", Nb de jours prise=%s' %
               (str(form.priseDateDebut.data), str(form.priseDateFin.data), str(form.priseNbJours.data)))
+        
         return redirect('/index')
     return render_template('prise.html',
                            title='Vacances - Prise',
@@ -124,6 +126,7 @@ def test():
     if form.validate_on_submit():
         flash('Login and password requested for LDAP="%s", remember_me=%s' %
               (form.login.data, str(form.remember_me.data)))
+	
         return redirect('/index')
     return render_template('user.html',
                            title='Sign Up',
