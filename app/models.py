@@ -1,6 +1,4 @@
 from app import db
-from app.ldap import Ldap
-from app.forms import LoginForm
 from app.forms import LoginForm
 from app.ldap import Ldap
 
@@ -48,25 +46,6 @@ class User(db.Model):
     @property
     def is_anonymous(self):
         return False
-
-    def get_id(self):
-        try:
-            return ord(self.id)
-        except NameError:
-            return str(self.id)
-
-    def get_name(self):
-        return self.nom
-
-    def create_user(self):
-        actual_user = Ldap.check_login()
-        self.login = LoginForm().login.data
-        self.nom = actual_user[0]
-        self.prenom = actual_user[1]
-        self.email = actual_user[2]
-        self.resp_id = actual_user[3]
-        self.role = actual_user[4]
-        return self
 
     @property
     def is_authenticated(self):

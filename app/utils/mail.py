@@ -13,8 +13,8 @@ class Mail:
     # @param text_body string 
     #  @param html_body string
     @staticmethod
-    def send_mail (subject, recipients, text_body, html_body) :
-        message = Message (subject, recipients=recipients)
+    def send_mail(subject, recipients, text_body, html_body):
+        message = Message(subject, recipients=recipients)
         message.body = text_body
         message.html = html_body
 

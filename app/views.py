@@ -1,16 +1,12 @@
-from flask import flash, redirect, render_template, request
 from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import request
-from app import db, models
-from .models import User
 
 from app import app
-from app.models import User
-from app.forms import LoginForm, DepotForm, PriseForm
 from app import db, models
 from app.forms import LoginForm, DepotForm, PriseForm
+from app.models import User
 
 
 @app.route('/')
