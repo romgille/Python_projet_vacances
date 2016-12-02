@@ -78,7 +78,7 @@ def admission_vacances():
                     u.status = result
                     db.session.commit()
 
-            msg = "Modification appliquées"
+            msg = "Modifications appliquées"
 
         else:
             msg = "Appliquer les modifications nécessaires"
@@ -92,7 +92,7 @@ def admission_vacances():
     else:
         return render_template('admission_vacances.html',
                                title='Autorisations',
-                               msg="Il n'y a pas de demandes de vancances.",
+                               msg="Il n'y a pas de demande de vacances.",
                                display=False
                                )
 
