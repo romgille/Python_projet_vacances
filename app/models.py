@@ -1,4 +1,4 @@
-from app import db
+from app import db, login_manager
 from app.forms import LoginForm
 from app.ldap import Ldap
 
@@ -21,16 +21,13 @@ class User(db.Model):
         return False
 
     def get_id(self):
-        try:
-            return ord(self.id)
-        except NameError:
-            return str(self.id)
+            return self.user_id
 
     def get_name(self):
         return self.nom
 
     def create_user(self):
-        actual_user = Ldap.check_login()
+        actual_user = Ldap.connect()
         self.login = LoginForm().login.data
         self.nom = actual_user[0]
         self.prenom = actual_user[1]
@@ -38,14 +35,6 @@ class User(db.Model):
         self.resp_id = actual_user[3]
         self.role = actual_user[4]
         return self
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
 
     @property
     def is_authenticated(self):
@@ -60,6 +49,9 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.user_id
+
+    def __init__(self, nom):
+        self.nom = nom
 
 
 class Vacances(db.Model):
@@ -84,3 +76,8 @@ class Vacances(db.Model):
         u = Vacances(date_debut=datedebut, date_fin=datefin, nb_jour=-nbjour, user_id=user, status=0)
         db.session.add(u)
         db.session.commit()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))

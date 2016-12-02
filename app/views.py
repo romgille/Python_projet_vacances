@@ -1,14 +1,16 @@
 from flask import flash
+from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
 import time
+from flask import url_for
+from flask_login import logout_user, login_required, login_user
 
 from app import app
 from app import db, models
 from app.forms import LoginForm, DepotForm, PriseForm
 from app.models import User
-
 
 
 @app.route('/')
@@ -24,19 +26,20 @@ def login():
     if form.validate_on_submit():
         print('Login and password requested for LDAP="%s", remember_me=%s' %
               (form.login.data, str(form.remember_me.data)))
-        exists = db.session.query(db.session.query(User).filter_by(login=form.login.data).exists()).scalar()
-        user_login = form.login.data
-        if not exists:
-            actual_user = User().create_user()
+        actual_user = User.query.filter_by(login=form.login.data).first()
+        if not actual_user:
+            actual_user = User(form.login.data).create_user()
             db.session.add(actual_user)
             db.session.commit()
-        return redirect('/user/' + user_login)
+        login_user(actual_user)
+        return redirect('/user/' + form.login.data)
     return render_template('login.html',
                            title='Sign Up',
                            form=form)
 
 
 @app.route('/historique_validation_vacances')
+@login_required
 def historique_admission_vacances():
     print(User.is_authenticated)
     list_vacances_users = models.User.query.filter_by(resp_id=1).all()
@@ -59,6 +62,7 @@ def historique_admission_vacances():
 
 
 @app.route('/admission_vacances', methods=['GET', 'POST'])
+@login_required  # TODO resp
 def admission_vacances():
     print(User().is_authenticated)
     list_vacances_users = models.User.query.filter_by(resp_id=1).all()
@@ -98,6 +102,7 @@ def admission_vacances():
 
 
 @app.route('/depot', methods=['GET', 'POST'])
+@login_required
 def depot():
     form = DepotForm()
     if form.validate_on_submit():
@@ -111,35 +116,31 @@ def depot():
 
 
 @app.route('/prise', methods=['GET', 'POST'])
+@login_required
 def prise():
     form = PriseForm()
     if form.validate_on_submit():
         flash('Date de debut prise = "%s", Date de fin prise = "%s", Nb de jours prise=%s' %
               (str(form.priseDateDebut.data), str(form.priseDateFin.data), str(form.priseNbJours.data)))
-        
         return redirect('/index')
     return render_template('prise.html',
                            title='Vacances - Prise',
                            form=form)
 
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login and password requested for LDAP="%s", remember_me=%s' %
-              (form.login.data, str(form.remember_me.data)))
-	
-        return redirect('/index')
-    return render_template('user.html',
-                           title='Sign Up',
-                           form=form)
 
-
-@app.route('/user/<user_login>')
+@app.route('/user/<user_login>', methods=['GET', 'POST'])
+@login_required
 def user(user_login):
     actual_user = User.query.filter_by(login=user_login).first()
     nom = actual_user.nom
     prenom = actual_user.prenom
     return render_template('user.html',
                            nom=prenom + ' ' + nom)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))

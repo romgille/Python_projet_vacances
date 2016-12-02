@@ -7,7 +7,7 @@ from app.forms import LoginForm
 
 class Ldap:
     @staticmethod
-    def check_login():
+    def connect():
         server = Server('ldap.esiee.fr', use_ssl=True, get_info=ALL)
         first_conn = Connection(server, user="uid=" + LoginForm().login.data + ",ou=Users,dc=esiee,dc=fr",
                                 password=LoginForm().password.data)
