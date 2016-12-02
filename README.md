@@ -24,3 +24,12 @@ HTTPS_PROXY=http://cache.esiee.fr:3128
 * sqlalchemy-migrate
 * flask-mail
 * flask-bootstrap
+
+
+---
+
+###TODO (si possible)
+
+* reset database (admin action)
+* archive datas / export csv (action admin)
+
