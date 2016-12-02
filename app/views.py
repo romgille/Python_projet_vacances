@@ -2,11 +2,13 @@ from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import request
+import time
 
 from app import app
 from app import db, models
 from app.forms import LoginForm, DepotForm, PriseForm
 from app.models import User
+
 
 
 @app.route('/')
@@ -58,6 +60,7 @@ def historique_admission_vacances():
 
 @app.route('/admission_vacances', methods=['GET', 'POST'])
 def admission_vacances():
+    print(User().is_authenticated)
     list_vacances_users = models.User.query.filter_by(resp_id=1).all()
     l = []
     v = []
