@@ -26,9 +26,6 @@ HTTPS_PROXY=http://cache.esiee.fr:3128
 * flask-bootstrap
 * flask-login
 
-
----
-
 ###TODO
 
 * templates views for mails (.txt and .html)
@@ -39,6 +36,6 @@ HTTPS_PROXY=http://cache.esiee.fr:3128
 * db init script
 * unit tests
 * more 
-..* reset database (admin action)
-..* archive datas / export csv (action admin)
+    * reset database (admin action)
+    * archive datas / export csv (action admin)
 
