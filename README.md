@@ -29,8 +29,13 @@ HTTPS_PROXY=http://cache.esiee.fr:3128
 
 ---
 
-###TODO (si possible)
+###TODO
 
-* reset database (admin action)
-* archive datas / export csv (action admin)
+* templates views for mails (.txt and .html)
+* sesion for current user login-in
+* db init script
+* unit tests
+* more 
+..* reset database (admin action)
+..* archive datas / export csv (action admin)
 
