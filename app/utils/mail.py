@@ -46,7 +46,7 @@ class Mail :
         if notificationType == notification_type.add_vacation :
             mail_object = mail_object + "Prise de congée de " + user.nom + " " + user.prenom
             template_base_name = template_base_name + "add_vacation"
-        else if notificationType == notification_type.remove_vacation :
+        elif notificationType == notification_type.remove_vacation :
             mail_object = mail_object + "Retrait de congée de " + user.nom + " " + user.prenom
             template_base_name = template_base_name + "remove_vacation"
             
