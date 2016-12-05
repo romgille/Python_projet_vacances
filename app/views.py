@@ -11,6 +11,8 @@ from app import app
 from app import db, models
 from app.forms import LoginForm, DepotForm, PriseForm
 from app.models import User
+from app import utils
+from app.utils.mail import Mail
 
 
 @app.route('/')
@@ -108,7 +110,9 @@ def depot():
     if form.validate_on_submit():
         flash('Date de debut depot = "%s", Date de fin depot = "%s", Nb de jours depot=%s' %
               (str(form.depotDateDebut.data), str(form.depotDateFin.data), str(form.depotNbJours.data)))
-        models.Vacances.depot_vacances(form.depotDateDebut.data,form.depotDateFin.data,form.depotNbJours.data,1)
+        user = None # TODO : fletch User (from session ?)
+        models.Vacances.depot_vacances(form.depotDateDebut.data,form.depotDateFin.data,form.depotNbJours.data,user)
+        Mail.vacation_notification (user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.add_vacation)
         return redirect('/index')
     return render_template('depot.html',
                            title='Vacances - Depot',
@@ -122,6 +126,8 @@ def prise():
     if form.validate_on_submit():
         flash('Date de debut prise = "%s", Date de fin prise = "%s", Nb de jours prise=%s' %
               (str(form.priseDateDebut.data), str(form.priseDateFin.data), str(form.priseNbJours.data)))
+        user = None # TODO : fletch User (from session ?)
+        Mail.vacation_notification (user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.remove_vacation)
         return redirect('/index')
     return render_template('prise.html',
                            title='Vacances - Prise',
