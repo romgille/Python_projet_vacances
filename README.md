@@ -33,6 +33,7 @@ HTTPS_PROXY=http://cache.esiee.fr:3128
 
 * templates views for mails (.txt and .html)
 * sesion for current user login-in
+* error page for wrong password on login
 * db init script
 * unit tests
 * more 
