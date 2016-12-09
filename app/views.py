@@ -3,6 +3,7 @@ from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
+from flask import session
 import time
 from flask import url_for
 from flask_login import logout_user, login_required, login_user
@@ -35,6 +36,7 @@ def login():
             db.session.add(actual_user)
             db.session.commit()
         login_user(actual_user)
+        session["user"] = actual_user.get_id()
         return redirect('/user/' + form.login.data)
     return render_template('login.html',
                            title='Sign Up',
@@ -44,62 +46,76 @@ def login():
 @app.route('/historique_validation_vacances')
 @login_required
 def historique_admission_vacances():
-    print(User.is_authenticated)
-    list_vacances_users = models.User.query.filter_by(resp_id=1).all()
-    l = []
-    for j in list_vacances_users:
-        v = models.Vacances.query.filter_by(user_id=j.user_id, status=1).all()
-        for n in v:
-            l.append(n)
-    print(len(l))
-    if len(l) > 0:
-        msg = "Vacances autorisées"
-    else:
-        msg = "Il n'y a eu aucunes vacances autorisées."
-    return render_template('historique_validation_vacances.html',
-                           title='Historique',
-                           l=l,
-                           models=models,
-                           msg=msg,
-                           display=True)
-
-
-@app.route('/admission_vacances', methods=['GET', 'POST'])
-@login_required  # TODO resp
-def admission_vacances():
-    print(User().is_authenticated)
-    list_vacances_users = models.User.query.filter_by(resp_id=1).all()
-    l = []
-    v = []
-    for j in list_vacances_users:
-        v = models.Vacances.query.filter_by(user_id=j.user_id, status=0).all()
-        for n in v:
-            l.append(n)
-    if len(v) > 0:
-        if request.method == 'POST':
-            for i in request.form:
-                result = request.form[i]
-                if result != "0":
-                    print("ID Vacances : " + i + " Rsultat : " + result)
-                    u = models.Vacances.query.filter_by(vacances_id=i).first()
-                    u.status = result
-                    db.session.commit()
-
-            msg = "Modifications appliquées"
-
+    resp_id = session.get("user",None)
+    if (models.User.query.filter_by(user_id=resp_id).first().role >= 1):
+        list_vacances_users = models.User.query.filter_by(resp_id=resp_id).all()
+        l = []
+        for j in list_vacances_users:
+            v = models.Vacances.query.filter(models.Vacances.user_id==j.user_id,models.Vacances.status!=0).all()
+            for n in v:
+                l.append(n)
+        print(len(l))
+        if len(l) > 0:
+            msg = "Historique des vacances"
         else:
-            msg = "Appliquer les modifications nécessaires"
-
-        return render_template('admission_vacances.html',
-                               title='Autorisations',
+            msg = "Il n'y a eu aucunes vacances autorisées."
+        return render_template('historique_validation_vacances.html',
+                               title='Historique',
                                l=l,
                                models=models,
                                msg=msg,
                                display=True)
     else:
+        return render_template('historique_validation_vacances.html',
+                               title='Interdit',
+                               models=models,
+                               msg="Vous n'avez pas les droits nécessaires pour accéder à cette page.",
+                               display=False)
+
+
+@app.route('/admission_vacances', methods=['GET', 'POST'])
+@login_required  # TODO resp
+def admission_vacances():
+    resp_id = session.get("user",None)
+    if(models.User.query.filter_by(user_id=resp_id).first().role >=1):
+        list_vacances_users = models.User.query.filter_by(resp_id=resp_id).all()
+        l = []
+        v = []
+        for j in list_vacances_users:
+            v = models.Vacances.query.filter_by(user_id=j.user_id, status=0).all()
+            for n in v:
+                l.append(n)
+        if len(v) > 0:
+            if request.method == 'POST':
+                for i in request.form:
+                    result = request.form[i]
+                    if result != "0":
+                        print("ID Vacances : " + i + " Rsultat : " + result)
+                        u = models.Vacances.query.filter_by(vacances_id=i).first()
+                        u.status = result
+                        db.session.commit()
+
+                msg = "Modifications appliquées"
+
+            else:
+                msg = "Appliquer les modifications nécessaires"
+
+            return render_template('admission_vacances.html',
+                                   title='Autorisations',
+                                   l=l,
+                                   models=models,
+                                   msg=msg,
+                                   display=True)
+        else:
+            return render_template('admission_vacances.html',
+                                   title='Autorisations',
+                                   msg="Il n'y a pas de demande de vacances.",
+                                   display=False
+                                   )
+    else:
         return render_template('admission_vacances.html',
-                               title='Autorisations',
-                               msg="Il n'y a pas de demande de vacances.",
+                               title="Interdit",
+                               msg="Vous n'avez pas les droits nécessaires pour accéder à cette page.",
                                display=False
                                )
 
