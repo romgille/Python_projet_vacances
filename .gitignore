@@ -93,6 +93,7 @@ Supprimerait flask/
 Supprimerait app.db
 Supprimerait db_repository/
 
+flask/
 app.db
 db_repository/
 db_repository/*
