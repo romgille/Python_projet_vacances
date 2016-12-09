@@ -4,7 +4,6 @@ from ldap3 import Connection, ALL
 from ldap3 import Server
 from app.forms import LoginForm
 
-
 class Ldap:
     @staticmethod
     def connect():
@@ -41,3 +40,28 @@ class Ldap:
             print('Bad Credentials')
 
         first_conn.unbind()
+
+    @staticmethod
+    def createUserFromLoginWithoutPass(login):
+        server = Server('ldap.esiee.fr', use_ssl=True, get_info=ALL)
+
+        conn = Connection(server)
+        conn.open()
+        conn.search('dc=esiee, dc=fr', "(&(objectclass=person)(uid=" + login + "))",
+                    attributes=['sn', 'principalMail', 'googleMail',
+                                'telephoneNumber', 'displayName', 'roomNumber', 'givenName',
+                                'dateCreation', 'dateExpiration', 'annuairePresent', 'mailEDU', 'Name'])
+        print(login)
+        name = base64.b64decode(str(conn.entries[0]['Prenom'])).decode('UTF-8')
+        surname = base64.b64decode(str(conn.entries[0]['Nom'])).decode('UTF-8')
+        email = str(conn.entries[0]['googleMail'])
+        resp_id = 1  # Todo faire propre
+        role = 0  # Todo faire propre
+        is_student = False
+
+        if is_student:
+            print('Bad Credentials')  # TODO créer une page pour login student
+            return
+
+        user = [surname, name, email, resp_id, role]
+        return user

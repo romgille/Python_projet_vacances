@@ -111,7 +111,7 @@ def depot():
     if form.validate_on_submit():
         flash('Date de debut depot = "%s", Date de fin depot = "%s", Nb de jours depot=%s' %
               (str(form.depotDateDebut.data), str(form.depotDateFin.data), str(form.depotNbJours.data)))
-        user = None # TODO : fletch User (from session ?)
+        user = User(session.get('user', None))
         Db_methods.depot_vacances (user, form.depotDateDebut.data,form.depotDateFin.data, form.depotNbJours.data)
         Mail.vacation_notification (user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.add_vacation)
         return redirect('/index')

@@ -1,6 +1,7 @@
 from app import db, login_manager
 from app.forms import LoginForm
 from app.ldap import Ldap
+import json
 
 
 class User(db.Model):
@@ -50,8 +51,11 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.user_id
 
-    def __init__(self, nom):
-        self.nom = nom
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
+    def __init__(self, j):
+        self.__dict__ = json.loads(j)
 
 
 class Vacances(db.Model):
