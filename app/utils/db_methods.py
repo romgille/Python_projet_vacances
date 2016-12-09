@@ -21,8 +21,8 @@ class Db_methods :
             nb_jour=nb_jour,
             user_id=user,
             status=0)
-        db.session.add (v)
-        db.session.commit ()
+        db.session.add(v)
+        db.session.commit()
 
 
     # prise_vacances
