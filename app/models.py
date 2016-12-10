@@ -53,10 +53,11 @@ class User(db.Model):
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
-                          sort_keys=True, indent=4)
+                          sort_keys=True, indent=0)
     def __init__(self, j):
         self.__dict__ = json.loads(j)
-
+    #def __init__(self, nom):
+    #    self.nom = nom
 
 class Vacances(db.Model):
     vacances_id = db.Column(db.Integer, primary_key=True)

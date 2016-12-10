@@ -36,7 +36,7 @@ def login():
             db.session.add(actual_user)
             db.session.commit()
         login_user(actual_user)
-        session["user"] = actual_user.get_id()
+        session["user"] = actual_user.toJSON()
         return redirect('/user/' + form.login.data)
     return render_template('login.html',
                            title='Sign Up',
@@ -143,7 +143,7 @@ def prise():
     if form.validate_on_submit():
         flash('Date de debut prise = "%s", Date de fin prise = "%s", Nb de jours prise=%s' %
               (str(form.priseDateDebut.data), str(form.priseDateFin.data), str(form.priseNbJours.data)))
-        user = None # TODO : fletch User (from session ?)
+        user = User(session.get('user', None))
         Db_methods.prise_vacances (user, form.depotDateDebut.data,form.depotDateFin.data, form.depotNbJours.data)
         Mail.vacation_notification (user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.remove_vacation)
         return redirect('/index')
