@@ -146,6 +146,20 @@ def admission_vacances():
 @login_required
 def depot():
     form = DepotForm()
+    user_id = session["user_id"]
+    v = models.Vacances.query.filter(models.Vacances.user_id == user_id, models.Vacances.status == 1).all()
+    w = models.Vacances.query.filter(models.Vacances.user_id == user_id, models.Vacances.status == 0).all()
+
+    solde_vacances = 0
+    if(len(v) > 0):
+        for i in v:
+            solde_vacances = solde_vacances+i.nb_jour
+
+    solde_vacances_validation = solde_vacances
+    if (len(w) > 0) :
+        for j in w:
+            solde_vacances_validation = solde_vacances_validation + j.nb_jour
+
     if form.validate_on_submit():
         flash('Date de debut depot = "%s", Date de fin depot = "%s", Nb de jours depot=%s' %
               (str(form.depotDateDebut.data), str(form.depotDateFin.data), str(form.depotNbJours.data)))
@@ -155,6 +169,8 @@ def depot():
         return redirect('/index')
     return render_template('depot.html',
                            title='Vacances - Depot',
+                           solde_vacances = solde_vacances,
+                           solde_vacances_validation = solde_vacances_validation,
                            form=form)
 
 
@@ -162,6 +178,20 @@ def depot():
 @login_required
 def prise():
     form = PriseForm()
+    user_id = session["user_id"]
+    v = models.Vacances.query.filter(models.Vacances.user_id == user_id, models.Vacances.status == 1).all()
+    w = models.Vacances.query.filter(models.Vacances.user_id == user_id, models.Vacances.status == 0).all()
+
+    solde_vacances = 0
+    if(len(v) > 0):
+        for i in v:
+            solde_vacances = solde_vacances+i.nb_jour
+
+    solde_vacances_validation = solde_vacances
+    if (len(w) > 0) :
+        for j in w:
+            solde_vacances_validation = solde_vacances_validation + j.nb_jour
+
     if form.validate_on_submit():
         flash('Date de debut prise = "%s", Date de fin prise = "%s", Nb de jours prise=%s' %
               (str(form.priseDateDebut.data), str(form.priseDateFin.data), str(form.priseNbJours.data)))
@@ -171,6 +201,8 @@ def prise():
         return redirect('/index')
     return render_template('prise.html',
                            title='Vacances - Prise',
+                           solde_vacances = solde_vacances,
+                           solde_vacances_validation = solde_vacances_validation,
                            form=form)
 
 
