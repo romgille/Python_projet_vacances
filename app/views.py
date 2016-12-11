@@ -36,7 +36,8 @@ def login():
             db.session.add(actual_user)
             db.session.commit()
         login_user(actual_user)
-        session["user"] = actual_user.toJSON()
+        #session["user"] = actual_user.toJSON()
+        session["user_id"] = actual_user.get_id();
         return redirect('/user/' + form.login.data)
     return render_template('login.html',
                            title='Sign Up',
@@ -46,7 +47,7 @@ def login():
 @app.route('/historique_validation_vacances')
 @login_required
 def historique_admission_vacances():
-    resp_id = session.get("user",None)
+    resp_id = session.get("user_id",None)
     if (models.User.query.filter_by(user_id=resp_id).first().role >= 1):
         list_vacances_users = models.User.query.filter_by(resp_id=resp_id).all()
         l = []
@@ -76,8 +77,21 @@ def historique_admission_vacances():
 @app.route('/admission_vacances', methods=['GET', 'POST'])
 @login_required  # TODO resp
 def admission_vacances():
-    resp_id = session.get("user",None)
+    resp_id = session.get("user_id",None)
     if(models.User.query.filter_by(user_id=resp_id).first().role >=1):
+        if request.method == 'POST':
+            for i in request.form:
+                result = request.form[i]
+                if result != "0":
+                    print("ID Vacances : " + i + " Rsultat : " + result)
+                    u = models.Vacances.query.filter_by(vacances_id=i).first()
+                    u.status = result
+                    db.session.commit()
+                msg = "Modifications appliquées"
+        else:
+            msg = "Appliquer les modifications nécessaires"
+
+
         list_vacances_users = models.User.query.filter_by(resp_id=resp_id).all()
         l = []
         v = []
@@ -86,19 +100,6 @@ def admission_vacances():
             for n in v:
                 l.append(n)
         if len(v) > 0:
-            if request.method == 'POST':
-                for i in request.form:
-                    result = request.form[i]
-                    if result != "0":
-                        print("ID Vacances : " + i + " Rsultat : " + result)
-                        u = models.Vacances.query.filter_by(vacances_id=i).first()
-                        u.status = result
-                        db.session.commit()
-
-                msg = "Modifications appliquées"
-
-            else:
-                msg = "Appliquer les modifications nécessaires"
 
             return render_template('admission_vacances.html',
                                    title='Autorisations',

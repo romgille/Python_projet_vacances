@@ -10,7 +10,7 @@
         <th>Nombre de jours  </th>
         <th> Date début </th>
         <th> Date fin </th>
-
+        <th> Validation </th>
     </tr>
         {% for i in l %}
             <tr>
@@ -25,7 +25,12 @@
 
                 <td> {{i.date_fin }}</td>
 
-
+                <td>{% if models.Vacances.query.filter_by(vacances_id=i.vacances_id).first().status == 1 %}
+                        oui
+                    {% else %}
+                        non
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
 
