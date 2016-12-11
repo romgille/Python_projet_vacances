@@ -73,6 +73,27 @@ def historique_admission_vacances():
                                msg="Vous n'avez pas les droits nécessaires pour accéder à cette page.",
                                display=False)
 
+@app.route('/historique_user')
+@login_required
+def historique_user():
+    user_id = session.get("user_id",None)
+    l=[]
+    v = models.Vacances.query.filter(models.Vacances.user_id==user_id,models.Vacances.status!=0).all()
+    for n in v:
+        l.append(n)
+    print(len(l))
+    if len(l) > 0:
+        msg = "Historique des vacances"
+    else:
+        msg = "Il n'y a eu aucunes vacances autorisées."
+    return render_template('historique_validation_vacances.html',
+                           title='Historique',
+                           l=l,
+                           models=models,
+                           msg=msg,
+                           display=True)
+
+
 
 @app.route('/admission_vacances', methods=['GET', 'POST'])
 @login_required  # TODO resp
