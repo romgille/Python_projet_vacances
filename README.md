@@ -28,11 +28,7 @@ HTTPS_PROXY=http://cache.esiee.fr:3128
 
 ###TODO
 
-* templates views for mails (.txt and .html)
-* session for current user login-in
 * error page for wrong password on login
-* organize imports
-* move db methods from app/models.py to app/utils/db_methods.py (keep only models on app/models.py)
 * db init script
 * unit tests
 * more 
