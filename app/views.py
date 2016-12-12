@@ -161,7 +161,7 @@ def depot():
             solde_vacances_validation = solde_vacances_validation + j.nb_jour
 
     if form.validate_on_submit():
-        Db_methods.depot_vacances(user, form.depotDateDebut.data,form.depotDateFin.data, form.depotNbJours.data)
+        Db_methods.depot_vacances(user_id, form.depotDateDebut.data,form.depotDateFin.data, form.depotNbJours.data)
         Mail.vacation_notification(user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.add_vacation)
         return redirect('/index')
     return render_template('depot.html',
@@ -191,7 +191,7 @@ def prise():
             solde_vacances_validation = solde_vacances_validation + j.nb_jour
 
     if form.validate_on_submit () :
-        Db_methods.prise_vacances(user, form.priseDateDebut.data,form.priseDateFin.data, form.priseNbJours.data)
+        Db_methods.prise_vacances(user_id, form.priseDateDebut.data,form.priseDateFin.data, form.priseNbJours.data)
         Mail.vacation_notification(user, [form.priseDateDebut.data,form.priseDateFin.data], Mail.notification_type.remove_vacation)
         return redirect('/index')
     return render_template('prise.html',
