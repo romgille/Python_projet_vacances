@@ -53,8 +53,8 @@ class User(db.Model):
 
     #def __init__(self, j):
      #   self.__dict__ = json.loads(j)
-    def __init__(self, nom):
-        self.nom = nom
+    #def __init__(self, nom):
+        #self.nom = nom
 
 
 class Vacances(db.Model):

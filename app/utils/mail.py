@@ -16,10 +16,10 @@ class Mail :
     # @param text_body string : mail text content
     # @param html_body string : mail html content
     @staticmethod
-    def send_mail (subject, recipients, text_body, html_body) :
+    def send_mail (subject, recipients, text_body ) : #, html_body) :
         message = Message (subject, recipients = recipients)
         message.body = text_body
-        message.html = html_body
+        #message.html = html_body
 
         mail.send(message)
 
@@ -41,28 +41,28 @@ class Mail :
     def vacation_notification (user, dates, notificationType) :
         responsable = models.User.query.get(user.resp_id)
         mail_object = "[AUTO] [app/vacances]"
-        template_base_name = "app/templates/mails/"
+        template_base_name = "mails/"
         
-        if notificationType == notification_type.add_vacation :
-            mail_object = mail_object + "Prise de congée de " + user.nom + " " + user.prenom
+        if notificationType == Mail.notification_type.add_vacation :
+            mail_object = mail_object + "Prise de congés de " + user.nom + " " + user.prenom
             template_base_name = template_base_name + "add_vacation"
-        elif notificationType == notification_type.remove_vacation :
-            mail_object = mail_object + "Retrait de congée de " + user.nom + " " + user.prenom
+        elif notificationType == Mail.notification_type.remove_vacation :
+            mail_object = mail_object + "Retrait de congés de " + user.nom + " " + user.prenom
             template_base_name = template_base_name + "remove_vacation"
             
-        user.send_mail (
+        Mail.send_mail (
             mail_object,
             [responsable.email],
             render_template (
                 template_base_name + ".txt",
                 user = user,
                 responsable = responsable,
-                dates = [ date_start, date_end ]),
-            render_template (
-                template_base_name + ".html",
-                user = user,
-                responsable = responsable, 
-                dates = [ date_start, date_end ]))
+                dates = {'debut': dates[0], 'fin': dates[1]})  )#,
+            #render_template (
+            #    template_base_name + ".html",
+            #    user = user,
+            #    responsable = responsable, 
+            #    dates = {'}debut': dates[0], 'fin': dates[1]}))
                 
                 
                 
