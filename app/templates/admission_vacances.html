@@ -17,17 +17,17 @@
         {% for i in l %}
             <tr>
 
-                <td> {{ models.User.query.filter_by(user_id=i.user_id).first().nom }} </td>
+                <td width="10%"> {{ models.User.query.filter_by(user_id=i.user_id).first().nom }} </td>
 
-                <td> {{ models.User.query.filter_by(user_id=i.user_id).first().prenom }} </td>
+                <td width="10%"> {{ models.User.query.filter_by(user_id=i.user_id).first().prenom }} </td>
 
-                <td> {{i.nb_jour }} </td>
+                <td width="10%"> {{i.nb_jour }} </td>
 
-                <td> {{ i.date_debut }}</td>
+                <td width="10%"> {{ i.date_debut }}</td>
 
-                <td> {{i.date_fin }}</td>
+                <td width="10%"> {{i.date_fin }}</td>
 
-                <td>
+                <td width="10%">
                     <select name= {{i.vacances_id}} id="validate">
                         <option value=0></option>
 

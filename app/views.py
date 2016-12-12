@@ -145,7 +145,7 @@ def admission_vacances():
 @login_required
 def depot():
     form = DepotForm()
-    user_id = session["user_id"]
+    user_id = session.get('user_id', None)
     v = models.Vacances.query.filter(models.Vacances.user_id == user_id, models.Vacances.status == 1).all()
     w = models.Vacances.query.filter(models.Vacances.user_id == user_id, models.Vacances.status == 0).all()
 
@@ -162,9 +162,9 @@ def depot():
     if form.validate_on_submit():
         flash('Date de debut depot = "%s", Date de fin depot = "%s", Nb de jours depot=%s' %
               (str(form.depotDateDebut.data), str(form.depotDateFin.data), str(form.depotNbJours.data)))
-        user = User(session.get('user', None))
-        Db_methods.depot_vacances (user, form.depotDateDebut.data,form.depotDateFin.data, form.depotNbJours.data)
-        Mail.vacation_notification (user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.add_vacation)
+        user = session.get('user_id', None)
+        Db_methods.depot_vacances(user, form.depotDateDebut.data,form.depotDateFin.data, form.depotNbJours.data)
+        Mail.vacation_notification(user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.add_vacation)
         return redirect('/index')
     return render_template('depot.html',
                            title='Vacances - Depot',
@@ -194,9 +194,9 @@ def prise():
     if form.validate_on_submit():
         flash('Date de debut prise = "%s", Date de fin prise = "%s", Nb de jours prise=%s' %
               (str(form.priseDateDebut.data), str(form.priseDateFin.data), str(form.priseNbJours.data)))
-        user = User(session.get('user', None))
-        Db_methods.prise_vacances (user, form.depotDateDebut.data,form.depotDateFin.data, form.depotNbJours.data)
-        Mail.vacation_notification (user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.remove_vacation)
+        user = session.get('user_id', None)
+        Db_methods.prise_vacances(user, form.priseDateDebut.data,form.priseDateFin.data, form.priseNbJours.data)
+        Mail.vacation_notification(user, [form.priseDateDebut.data,form.priseDateFin.data], Mail.notification_type.remove_vacation)
         return redirect('/index')
     return render_template('prise.html',
                            title='Vacances - Prise',
