@@ -32,8 +32,12 @@
 
                 <td width="10%">{% if models.Vacances.query.filter_by(vacances_id=i.vacances_id).first().status == 1 %}
                         oui
-                    {% else %}
+                    {% endif % }
+                    {% if  models.Vacances.query.filter_by(vacances_id=i.vacances_id).first().status == -1 %}
                         non
+                    {% endif %}
+                    {% if models.Vacances.query.filter_by(vacances_id=i.vacances_id).first().status == 0 %}
+                        en attente
                     {% endif %}
                 </td>
             </tr>

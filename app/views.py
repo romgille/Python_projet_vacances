@@ -37,6 +37,7 @@ def login():
             db.session.commit()
         login_user(actual_user)
         session["user_id"] = actual_user.get_id()
+        session["role"] = actual_user.role
         return redirect('/user/' + form.login.data)
     return render_template('login.html',
                            title='Sign Up',
@@ -77,7 +78,7 @@ def historique_admission_vacances():
 def historique_user():
     user_id = session.get("user_id",None)
     l=[]
-    v = models.Vacances.query.filter(models.Vacances.user_id==user_id,models.Vacances.status!=0).all()
+    v = models.Vacances.query.filter(models.Vacances.user_id==user_id).all()
     for n in v:
         l.append(n)
     print(len(l))
