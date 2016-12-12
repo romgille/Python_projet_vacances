@@ -51,10 +51,10 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.user_id
 
-    def __init__(self, j):
-        self.__dict__ = json.loads(j)
-    #def __init__(self, nom):
-    #    self.nom = nom
+    #def __init__(self, j):
+     #   self.__dict__ = json.loads(j)
+    def __init__(self, nom):
+        self.nom = nom
 
 class Vacances(db.Model):
     vacances_id = db.Column(db.Integer, primary_key=True)
