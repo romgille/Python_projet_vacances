@@ -29,8 +29,7 @@ class Ldap:
 
             dept_resp = createDicWithDepartment()
             usr_resp = createDicWithUser(dept_resp)
-            resp_id = models.User.query.filter_by(user_id=usr_resp[LoginForm().login.data]).first()
-            resp_id = 1
+            resp_id = models.User.query.filter_by(user_id=usr_resp[LoginForm().login.data]).first().get_id()
             role = 0
             user = [surname, name, email, resp_id, role]
             first_conn.bind()
@@ -45,33 +44,6 @@ class Ldap:
                                 password=LoginForm().password.data)
         first_conn.open()
         return first_conn.bind()
-
-    @staticmethod
-    def createUserFromLoginWithoutPass(login):
-        server = Server('ldap.esiee.fr', use_ssl=True, get_info=ALL)
-
-        conn = Connection(server)
-        conn.open()
-        conn.search('dc=esiee, dc=fr', "(&(objectclass=person)(uid=" + LoginForm().login.data + "))",
-                    attributes=['sn', 'principalMail', 'googleMail',
-                                'telephoneNumber', 'displayName', 'roomNumber', 'givenName',
-                                'dateCreation', 'dateExpiration', 'annuairePresent', 'mailEDU', 'Name'])
-        name = base64.b64decode(str(conn.entries[0]['Prenom'])).decode('UTF-8')
-        surname = base64.b64decode(str(conn.entries[0]['Nom'])).decode('UTF-8')
-        email = str(conn.entries[0]['googleMail'])
-        dept_resp = createDicWithDepartment()
-        usr_resp = createDicWithUser(dept_resp)
-        resp_id = models.User.query.filter_by(user_id=usr_resp[login]).first()
-        role = 0
-        is_student = False
-
-        if is_student:
-            print('Bad Credentials')  # TODO créer une page pour login student
-            return
-
-        user = [surname, name, email, resp_id, role]
-        return user
-
 
 def createDicWithDepartment():
     dept_resp = {}
