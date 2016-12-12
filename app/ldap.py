@@ -27,8 +27,8 @@ class Ldap:
             surname = base64.b64decode(str(first_conn.entries[0]['Nom'])).decode('UTF-8')
             email = str(first_conn.entries[0]['googleMail'])
 
-            dept_resp = createDicWithDepartment()
-            usr_resp = createDicWithUser(dept_resp)
+            dept_resp = create_dic_with_department()
+            usr_resp = create_dic_with_user(dept_resp)
             resp_id = models.User.query.filter_by(user_id=usr_resp[LoginForm().login.data]).first().get_id()
             role = 0
             user = [surname, name, email, resp_id, role]
@@ -45,7 +45,8 @@ class Ldap:
         first_conn.open()
         return first_conn.bind()
 
-def createDicWithDepartment():
+
+def create_dic_with_department():
     dept_resp = {}
     with open('csv/resp_depts.csv', 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
@@ -59,7 +60,7 @@ def createDicWithDepartment():
     return dept_resp
 
 
-def createDicWithUser(dept_resp):
+def create_dic_with_user(dept_resp):
     dept_usr = {}
     with open('csv/liste_enseignants_2016-17.csv', 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')

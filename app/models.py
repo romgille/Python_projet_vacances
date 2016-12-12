@@ -1,7 +1,6 @@
 from app import db, login_manager
 from app.forms import LoginForm
 from app.ldap import Ldap
-import json
 
 
 class User(db.Model):
@@ -32,12 +31,12 @@ class User(db.Model):
         actual_user = Ldap.connect()
         if actual_user is not None:
             user = User(
-                login = LoginForm().login.data,
-                nom = actual_user[0],
-                prenom = actual_user[1],
-                email = actual_user[2],
-                resp_id = actual_user[3],
-                role = actual_user[4]
+                login=LoginForm().login.data,
+                nom=actual_user[0],
+                prenom=actual_user[1],
+                email=actual_user[2],
+                resp_id=actual_user[3],
+                role=actual_user[4]
             )
             return user
         return None
@@ -55,11 +54,6 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.user_id
-
-    #def __init__(self, j):
-     #   self.__dict__ = json.loads(j)
-    #def __init__(self, nom):
-        #self.nom = nom
 
 
 class Vacances(db.Model):

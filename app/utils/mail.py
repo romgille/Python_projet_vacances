@@ -1,8 +1,6 @@
 from flask import render_template
 from flask_mail import Message
 from app import mail, models
-
-from datetime import date
 from enum import Enum
 
 

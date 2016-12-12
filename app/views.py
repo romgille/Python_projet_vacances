@@ -1,10 +1,7 @@
-from flask import flash
-from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import session
-import time
 from flask import url_for
 from flask_login import logout_user, login_required, login_user
 
@@ -13,9 +10,8 @@ from app import db, models
 from app.forms import LoginForm, DepotForm, PriseForm
 from app.ldap import Ldap
 from app.models import User
-from app import utils
 from app.utils.mail import Mail
-from app.utils.db_methods import Db_methods
+from app.utils.dbmethods import DbMethods
 
 
 @app.route('/')
@@ -77,9 +73,9 @@ def historique_admission_vacances():
 @app.route('/historique_user')
 @login_required
 def historique_user():
-    user_id = session.get("user_id",None)
-    l=[]
-    v = models.Vacances.query.filter(models.Vacances.user_id==user_id,models.Vacances.status!=0).all()
+    user_id = session.get("user_id", None)
+    l = []
+    v = models.Vacances.query.filter(models.Vacances.user_id == user_id, models.Vacances.status != 0).all()
     for n in v:
         l.append(n)
     print(len(l))
@@ -161,8 +157,9 @@ def depot():
             solde_vacances_validation = solde_vacances_validation + j.nb_jour
 
     if form.validate_on_submit():
-        Db_methods.depot_vacances(user_id, form.depotDateDebut.data,form.depotDateFin.data, form.depotNbJours.data)
-        Mail.vacation_notification(user, [form.depotDateDebut.data,form.depotDateFin.data], Mail.notification_type.add_vacation)
+        DbMethods.depot_vacances(user_id, form.depotDateDebut.data, form.depotDateFin.data, form.depotNbJours.data)
+        Mail.vacation_notification(user, [form.depotDateDebut.data, form.depotDateFin.data],
+                                   Mail.notification_type.add_vacation)
         return redirect('/index')
     return render_template('depot.html',
                            title='Vacances - Depot',
@@ -190,9 +187,10 @@ def prise():
         for j in w:
             solde_vacances_validation = solde_vacances_validation + j.nb_jour
 
-    if form.validate_on_submit () :
-        Db_methods.prise_vacances(user_id, form.priseDateDebut.data,form.priseDateFin.data, form.priseNbJours.data)
-        Mail.vacation_notification(user, [form.priseDateDebut.data,form.priseDateFin.data], Mail.notification_type.remove_vacation)
+    if form.validate_on_submit():
+        DbMethods.prise_vacances(user_id, form.priseDateDebut.data, form.priseDateFin.data, form.priseNbJours.data)
+        Mail.vacation_notification(user, [form.priseDateDebut.data, form.priseDateFin.data],
+                                   Mail.notification_type.remove_vacation)
         return redirect('/index')
     return render_template('prise.html',
                            title='Vacances - Prise',
