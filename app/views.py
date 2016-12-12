@@ -36,8 +36,7 @@ def login():
             db.session.add(actual_user)
             db.session.commit()
         login_user(actual_user)
-        #session["user"] = actual_user.toJSON()
-        session["user_id"] = actual_user.get_id();
+        session["user_id"] = actual_user.get_id()
         return redirect('/user/' + form.login.data)
     return render_template('login.html',
                            title='Sign Up',
@@ -47,7 +46,7 @@ def login():
 @app.route('/historique_validation_vacances')
 @login_required
 def historique_admission_vacances():
-    resp_id = session.get("user_id",None)
+    resp_id = session.get("user_id", None)
     if (models.User.query.filter_by(user_id=resp_id).first().role >= 1):
         list_vacances_users = models.User.query.filter_by(resp_id=resp_id).all()
         l = []
