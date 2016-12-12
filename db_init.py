@@ -36,7 +36,7 @@ with open ('csv/liste_enseignants_2016-17.csv', 'r') as csvfile :
         login = re.sub('[éèê]', 'e', (name[:8] + firstname[0]).lower()) # TODO : check more special chars
         resp = dept_resp[ row[1].split ('EP : Dept. ')[1] ]
         user_data = Ldap.createUserFromLoginWithoutPass(login)
-        user = models.User (
+        user = models.User(
             login=login,
             nom=user_data[0],
             prenom=user_data[1],

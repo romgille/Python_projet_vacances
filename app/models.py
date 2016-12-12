@@ -22,7 +22,7 @@ class User(db.Model):
         return False
 
     def get_id(self):
-            return self.user_id
+        return self.user_id
 
     def get_name(self):
         return self.nom
@@ -53,8 +53,10 @@ class User(db.Model):
 
     def __init__(self, j):
         self.__dict__ = json.loads(j)
-    #def __init__(self, nom):
+
+    # def __init__(self, nom):
     #    self.nom = nom
+
 
 class Vacances(db.Model):
     vacances_id = db.Column(db.Integer, primary_key=True)
