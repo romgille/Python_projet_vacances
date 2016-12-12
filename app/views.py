@@ -103,7 +103,7 @@ def admission_vacances():
             for i in request.form:
                 result = request.form[i]
                 if result != "0":
-                    print("ID Vacances : " + i + " Rsultat : " + result)
+                    print("ID Vacances : " + i + " Resultat : " + result)
                     u = models.Vacances.query.filter_by(vacances_id=i).first()
                     u.status = result
                     db.session.commit()
@@ -221,3 +221,11 @@ def user(user_login):
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.errorhandler(401)
+def unauthorized(e):
+    return render_template('401.html'), 401
+
+@app.errorhandler(404)
+def unauthorized(e):
+    return render_template('404.html'), 404
