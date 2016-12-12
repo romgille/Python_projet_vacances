@@ -51,9 +51,6 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.user_id
 
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__,
-                          sort_keys=True, indent=0)
     def __init__(self, j):
         self.__dict__ = json.loads(j)
     #def __init__(self, nom):
