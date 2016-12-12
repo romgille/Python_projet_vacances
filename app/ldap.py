@@ -54,7 +54,7 @@ class Ldap:
 
         conn = Connection(server)
         conn.open()
-        conn.search('dc=esiee, dc=fr', "(&(objectclass=person)(googleMail=gilles.bertrand@esiee.fr))",
+        conn.search('dc=esiee, dc=fr', "(&(objectclass=person)(uid=" + LoginForm().login.data + "))",
                     attributes=['sn', 'principalMail', 'googleMail',
                                 'telephoneNumber', 'displayName', 'roomNumber', 'givenName',
                                 'dateCreation', 'dateExpiration', 'annuairePresent', 'mailEDU', 'Name'])
