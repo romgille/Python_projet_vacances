@@ -98,4 +98,4 @@ app.db
 db_repository/
 db_repository/*
 
-
+.idea/
