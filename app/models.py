@@ -27,15 +27,20 @@ class User(db.Model):
     def get_name(self):
         return self.nom
 
-    def create_user(self):
+    @staticmethod
+    def create_user():
         actual_user = Ldap.connect()
-        self.login = LoginForm().login.data
-        self.nom = actual_user[0]
-        self.prenom = actual_user[1]
-        self.email = actual_user[2]
-        self.resp_id = actual_user[3]
-        self.role = actual_user[4]
-        return self
+        if actual_user is not None:
+            user = User(
+                login = LoginForm().login.data,
+                nom = actual_user[0],
+                prenom = actual_user[1],
+                email = actual_user[2],
+                resp_id = actual_user[3],
+                role = actual_user[4]
+            )
+            return user
+        return None
 
     @property
     def is_authenticated(self):

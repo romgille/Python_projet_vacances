@@ -10,6 +10,7 @@ from ldap3 import Server
 from app import models
 from app.forms import LoginForm
 
+
 class Ldap:
     @staticmethod
     def connect():
@@ -17,36 +18,33 @@ class Ldap:
         first_conn = Connection(server, user="uid=" + LoginForm().login.data + ",ou=Users,dc=esiee,dc=fr",
                                 password=LoginForm().password.data)
         first_conn.open()
-        first_conn.bind()
+        first_conn.search('dc=esiee, dc=fr', "(&(objectclass=person)(uid=" + LoginForm().login.data + "))",
+                          attributes=['sn', 'principalMail', 'googleMail',
+                                      'telephoneNumber', 'displayName', 'roomNumber', 'givenName',
+                                      'dateCreation', 'dateExpiration', 'annuairePresent', 'mailEDU', 'Name'])
+        if len(first_conn.entries) > 0:
+            name = base64.b64decode(str(first_conn.entries[0]['Prenom'])).decode('UTF-8')
+            surname = base64.b64decode(str(first_conn.entries[0]['Nom'])).decode('UTF-8')
+            email = str(first_conn.entries[0]['googleMail'])
 
-        if first_conn.result['description'] == 'success':
-
-            conn = Connection(server)
-            conn.open()
-            conn.search('dc=esiee, dc=fr', "(&(objectclass=person)(uid=" + LoginForm().login.data + "))",
-                        attributes=['sn', 'principalMail', 'googleMail',
-                                    'telephoneNumber', 'displayName', 'roomNumber', 'givenName',
-                                    'dateCreation', 'dateExpiration', 'annuairePresent', 'mailEDU', 'Name'])
-            name = base64.b64decode(str(conn.entries[0]['Prenom'])).decode('UTF-8')
-            surname = base64.b64decode(str(conn.entries[0]['Nom'])).decode('UTF-8')
-            email = str(conn.entries[0]['googleMail'])
-
-            resp_id = 1  # Todo faire propre
+            dept_resp = createDicWithDepartment()
+            usr_resp = createDicWithUser(dept_resp)
+            resp_id = models.User.query.filter_by(user_id=usr_resp[LoginForm().login.data]).first()
+            resp_id = 1
             role = 0
-            is_student = False
-
-            if is_student:
-                print('Bad Credentials')  # TODO créer une page pour login student
-                return
-
             user = [surname, name, email, resp_id, role]
-
+            first_conn.bind()
             return user
+        first_conn.bind()
+        return None
 
-        else:
-            print('Bad Credentials')
-
-        first_conn.unbind()
+    @staticmethod
+    def connect_simple():
+        server = Server('ldap.esiee.fr', use_ssl=True, get_info=ALL)
+        first_conn = Connection(server, user="uid=" + LoginForm().login.data + ",ou=Users,dc=esiee,dc=fr",
+                                password=LoginForm().password.data)
+        first_conn.open()
+        return first_conn.bind()
 
     @staticmethod
     def createUserFromLoginWithoutPass(login):
@@ -97,7 +95,7 @@ def createDicWithUser(dept_resp):
             name = re.search('([A-Z\']|( [A-Z]{2,}))+', row[0]).group(0).strip()
             firstname = row[0].split(name)[1].strip()
             login = re.sub('[éèê]', 'e', (name[:8] + firstname[0]).lower())  # TODO : check more special chars
-            #print(row[1].split('EP : Dept. ')[1])
+            # print(row[1].split('EP : Dept. ')[1])
             resp = dept_resp[row[1].split('EP : Dept. ')[1]]
             dept_usr[login] = resp
     return dept_usr
