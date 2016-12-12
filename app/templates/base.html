@@ -26,8 +26,10 @@
               {% if session["user_id"] != null %}
 			<li><a href="/depot">Depot</a></li>
 			<li><a href="/prise">Prise</a></li>
+                  {% if session['role'] >= 1 %}
 			<li><a href="/admission_vacances">Autorisations de vacances</a></li>
 			<li><a href="/historique_validation_vacances">Historique Validation</a></li>
+                      {% endif %}
 			<li><a href="/historique_user">Historique</a></li>
       <li><a href="/logout">Logout</a></li>
       {% endif %}

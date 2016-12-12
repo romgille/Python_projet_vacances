@@ -37,6 +37,7 @@ def login():
             db.session.commit()
         login_user(actual_user)
         session["user_id"] = actual_user.get_id()
+        session["role"] = actual_user.role
         return redirect('/user/' + form.login.data)
     return render_template('login.html',
                            title='Sign Up',
