@@ -27,10 +27,10 @@ def login():
     if form.validate_on_submit():
         if Ldap.connect_simple():
             u = User.query.filter_by(login=form.login.data).first()
-            if not u:
-                u = User.create_user()
-                db.session.add(u)
-                db.session.commit()
+            #if not u:
+            #    u = User.create_user()
+            #    db.session.add(u)
+            #    db.session.commit()
             login_user(u)
             session["user_id"] = u.get_id()
             session["role"] = u.role
