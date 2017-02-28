@@ -5,7 +5,7 @@ from app.ldap import Ldap
 
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    login = db.Column(db.String(64), index=True, unique=False)
+    login = db.Column(db.String(64), index=True, unique=True)
     nom = db.Column(db.String(64), index=True, unique=False)
     prenom = db.Column(db.String(64), index=True, unique=False)
     email = db.Column(db.String(120), index=True, unique=True)
