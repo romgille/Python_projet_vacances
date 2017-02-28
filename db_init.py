@@ -15,11 +15,10 @@ def import_resp_to_db(i):
                 firstname = row[2].strip()
                 login = re.sub('[éèê]', 'e', (name[0:8] + firstname[0]).lower())
                 email = row[4].strip()
-                role=1
+                role=2 # => responsable
                 u = User(user_id=user_id, login=login, nom=name, prenom=firstname, email=email, resp_id=user_id, role=role)
                 db.session.add(u)
-
-    db.session.commit()                
+    db.session.commit()
 
 
 def get_department(i):
@@ -32,7 +31,7 @@ def get_department(i):
                 firstname = row[2].strip()
                 dept = row[1].strip()
                 login = re.sub('[éèê]', 'e', (name[0:8] + firstname[0]).lower())
-                dept_dic[dept]  = login
+                dept_dic[dept]  = User.query.filter_by(login=login, role=2).first().user_id
     return dept_dic
 
 
@@ -44,7 +43,7 @@ def import_user_to_db(i):
             name = row[0].split(" ")[0]
             firstname = row[0].split(" ")[1]
             login = re.sub('[éèê]', 'e', (name[0:8] + firstname[0]).lower())
-            email = firstname + "." + name + "@esiee.fr" 
+            email = firstname + "." + name + "@esiee.fr"
             role=1
             dept = row[1].split('EP : Dept. ')[1]
             resp_id = dept_dic[dept]

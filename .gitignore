@@ -93,9 +93,14 @@ Supprimerait flask/
 Supprimerait app.db
 Supprimerait db_repository/
 
+# ignore flask framework databases struff
 flask/
 app.db
+app.db-journal
 db_repository/
 db_repository/*
+
+# do not commit config unless you are sure it do not contains personnals data
+config.py
 
 .idea/
